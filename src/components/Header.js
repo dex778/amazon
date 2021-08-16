@@ -6,15 +6,23 @@ import {
     ShoppingCartIcon
 } from "@heroicons/react/outline"
 
-function Header() {
+import { signIn, signOut, useSession } from "next-auth/client";
+import { useRouter } from "next/router"
+import { useSelector } from 'react-redux'
+import { selectItems } from '../slices/basketSlice';
 
+function Header() {
+    const [session] = useSession();
+    const router = useRouter();
+    const items = useSelector(selectItems)
 
     return (
         <header>
             {/* top nav */}
             <div className="flex itmes-center bg-amazon_blue p-1 gflex-grow py-2 ">
                 <div className="mt-2 flex items-center flex-grow sm:flex-grow-0">
-                    <Image
+                    <Image 
+                        onClick={() => router.push ('/')}
                         src={'https://links.papareact.com/f90'}
                         width={150}
                         height={40}
@@ -31,8 +39,10 @@ function Header() {
 
                 {/* Right side */}
                 <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap">
-                    <div className=" link">
-                        <p>Hello, Kenneth!</p>
+                    <div onClick={!session ? signIn : signOut } className="cursor-pointer link">
+                        <p className="hover:underline">
+                            {session ? `Hello,  ${session.user.name}`: "Sign In"}
+                        </p>
                         <p className="font-extrabold  med:text-sm">Account & Lists</p>
 
                     </div>
@@ -40,8 +50,9 @@ function Header() {
                         <p>Returns</p>
                         <p className="font-extrabold med:text-sm">Orders</p>
                     </div>
-                    <div className="relative link flex items-center"> 
-                        <span className="absolute top-0 right-10 h-4 w-4 bg-yellow-400 text-center rounded-full text-black">0</span>
+                    <div onClick={() => router.push('/checkout')} className="relative link flex items-center"> 
+                        <span className="absolute top-0 right-10 h-4 w-4 bg-yellow-400 text-center rounded-full text-black">{items.length}
+                        </span>
                         <ShoppingCartIcon className="h-10"/>
                         <p className="hidden md:inline font-extrabold med:text-sm mt-2">Basket</p>
                     </div>

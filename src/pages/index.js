@@ -41,3 +41,6 @@ export async function getServerSideProps(context) {
 }
 
 //GET https://fakestoreapi.com/products
+
+
+//The index.js is what shows the content of every page. The order in which each component is placed is the order in which it appears.
