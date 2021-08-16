@@ -14,6 +14,7 @@ function ProductFeed({ products }) {
                     description={description}
                     category={category}
                     image={image}
+                    
                 />
 
             ))}
